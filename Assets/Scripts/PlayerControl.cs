@@ -7,12 +7,26 @@ public class PlayerControl : MonoBehaviour {
     public float JumpStrength;
     private bool alive;
     private bool jumping;
+    public int JumpCollectables;
+
 
     // Use this for initialization
     void Start () {
         rb = GetComponent<Rigidbody>();
+        JumpStrength += JumpCollectables;
         jumping = false;
 
+    }
+    void OnTriggerEnter (Collider other)
+    {
+        Debug.Log(other.gameObject.tag);
+        if (other.gameObject.tag == "jump_collectable")
+        {
+            Debug.Log("hit a collectable");
+            Destroy(other.gameObject);
+            JumpStrength++;
+            JumpCollectables++;
+        }
     }
 	
 	// Update is called once per frame
@@ -24,7 +38,6 @@ public class PlayerControl : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.W) == true && !jumping)
         {
-            Debug.Log("pressed a w");
             jumping = true;
             rb.velocity = new Vector3(moveHorizontal,  JumpStrength, 0);
         }

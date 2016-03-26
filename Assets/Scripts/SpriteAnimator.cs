@@ -17,7 +17,7 @@ public class SpriteAnimator : MonoBehaviour
         public int CurrentFrameIndex = 0;
         public void NextFrame()
         {
-            if (frameCounter > 0.001)
+            if (frameCounter > 0.001) //cant trust floats
             {
                 frameCounter--;
                 return;
@@ -59,6 +59,7 @@ public class SpriteAnimator : MonoBehaviour
             if (ani.Name == name)
             {
                 currentAnimation = ani;
+                CurrentAnimationName = name;
                 return;
             }
         }
@@ -68,12 +69,10 @@ public class SpriteAnimator : MonoBehaviour
 	// Use this for initialization
 	void Start () 
     {
-        //Debug.Log(this.GetComponent<MeshRenderer>().material.mainTexture.width);
         myRenderer = this.GetComponent<MeshRenderer>();
         textureScale = new Vector2(1.0f / NumberOfFrames.x, 1.0f / NumberOfFrames.y);
 
         myRenderer.material.mainTextureScale = textureScale;
-
         SetCurrentAnimation(CurrentAnimationName);
 	}
 	

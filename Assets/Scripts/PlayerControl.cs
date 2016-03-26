@@ -14,6 +14,7 @@ public class PlayerControl : MonoBehaviour {
 	void FixedUpdate () {
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
-        Debug.Log(moveHorizontal + " : " + moveVertical );
+        Vector3 movement = new Vector3(moveHorizontal, moveVertical, 0.0f);
+        rb.MovePosition(transform.position + movement * Time.deltaTime);
 	}
 }

@@ -8,6 +8,7 @@ public class PlayerControl : MonoBehaviour {
     private bool alive;
     private bool jumping;
     public int JumpCollectables;
+    public int SpeedCollectables;
 
 
     // Use this for initialization
@@ -17,15 +18,22 @@ public class PlayerControl : MonoBehaviour {
         jumping = false;
 
     }
+
     void OnTriggerEnter (Collider other)
     {
         Debug.Log(other.gameObject.tag);
-        if (other.gameObject.tag == "jump_collectable")
+        string objTag = other.gameObject.tag;
+        if ( objTag == "spring_sprung")
         {
-            Debug.Log("hit a collectable");
             Destroy(other.gameObject);
             JumpStrength++;
             JumpCollectables++;
+        }
+        else if (objTag == "oil_wriggle")
+        {
+            Destroy(other.gameObject);
+            Speed++;
+            SpeedCollectables++;
         }
     }
 	

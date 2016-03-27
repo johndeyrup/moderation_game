@@ -17,6 +17,8 @@ public class Gear : MonoBehaviour {
 	}
 
 	void FixedUpdate(){
-		this.transform.Rotate(new Vector3(0, 0, RotSpeed));
+		//this.transform.Rotate(new Vector3(0, 0, RotSpeed));
+		Rigidbody rb = this.GetComponent<Rigidbody>();
+		rb.MoveRotation(rb.rotation * Quaternion.Euler(0, 0, RotSpeed));
 	}
 }

@@ -9,6 +9,11 @@ public class PlayerControl : MonoBehaviour {
     private bool jumping;
     public int JumpCollectables;
     public int SpeedCollectables;
+    public GameObject heroPrefab;
+    private Vector3 checkpoint;
+    private Camera cam;
+    private Vector3 cameraOffset;
+    private CapsuleCollider cap;
 
 
     // Use this for initialization
@@ -16,6 +21,10 @@ public class PlayerControl : MonoBehaviour {
         rb = GetComponent<Rigidbody>();
         JumpStrength += JumpCollectables;
         jumping = false;
+        checkpoint = new Vector3(-15f, 1f, 0.0f);
+        cam = Camera.main;
+        cameraOffset = new Vector3(0.0f, 0.0f, -6.0f);
+        cap = GetComponent<CapsuleCollider>();
 
     }
 
@@ -23,7 +32,13 @@ public class PlayerControl : MonoBehaviour {
     {
         Debug.Log(other.gameObject.tag);
         string objTag = other.gameObject.tag;
-        if ( objTag == "spring_sprung")
+        if (objTag == "death_obj")
+        {            
+            Instantiate(heroPrefab, checkpoint, Quaternion.identity);
+            Destroy(gameObject);
+            
+        }
+        else if ( objTag == "spring_sprung")
         {
             Destroy(other.gameObject);
             JumpStrength++;
@@ -35,12 +50,18 @@ public class PlayerControl : MonoBehaviour {
             Speed++;
             SpeedCollectables++;
         }
+        else if (objTag =="Respawn")
+        {
+            checkpoint = other.transform.position;
+        }
     }
+
 	
 	// Update is called once per frame
 	void FixedUpdate () {
         float moveHorizontal = Input.GetAxis("Horizontal");
-        if (rb.velocity.y == 0) {
+        RaycastHit hit;
+        if (Physics.SphereCast(rb.transform.position,  cap.radius/2, (-transform.up), out hit, .3f)) {
             jumping = false;
         }
 
@@ -53,5 +74,6 @@ public class PlayerControl : MonoBehaviour {
         Vector3 movement = new Vector3(moveHorizontal, 0.0f, 0.0f);
         
         rb.MovePosition(transform.position + movement * Speed);
+        cam.transform.position = rb.position + cameraOffset;
 	}
 }

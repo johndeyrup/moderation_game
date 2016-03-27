@@ -44,6 +44,7 @@ public class PlayerControl : MonoBehaviour {
         }
         else if ( objTag == "spring_sprung")
         {
+			Destroy(other.gameObject);
             JumpStrength++;
             JumpCollectables++;
         }
@@ -78,7 +79,25 @@ public class PlayerControl : MonoBehaviour {
             grounded = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.W) == true && !jumping && grounded)
+		if(Input.GetKeyDown(KeyCode.UpArrow)){
+			JumpStrength++;
+			JumpCollectables++;
+		}
+		if(Input.GetKeyDown(KeyCode.DownArrow)){
+			JumpStrength--;
+			JumpCollectables--;
+		}
+
+		if(Input.GetKeyDown(KeyCode.RightArrow)){
+			Speed++;
+			SpeedCollectables++;
+		}
+		if(Input.GetKeyDown(KeyCode.LeftArrow)){
+			Speed--;
+			SpeedCollectables--;
+		}
+		
+		if (Input.GetKeyDown(KeyCode.W) == true && !jumping && grounded)
         {
             jumping = true;
             rb.velocity = new Vector3(moveHorizontal,  JumpStrength, 0);
